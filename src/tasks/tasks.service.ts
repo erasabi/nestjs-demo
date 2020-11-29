@@ -19,7 +19,7 @@ export class TasksService {
             // this error will not be caught because we dont have a try catch block
             // so this error will escalate to nestJS 
             // nestJS will recognize the Exception() and handle response
-            throw new NotFoundException();
+            throw new NotFoundException(`Task with ID ${id} not found`);
         }
 
         return task;
