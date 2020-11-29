@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Task, TaskStatus } from './task.model';
 import { v1 as uuid } from 'uuid';
 import { CreateTaskDto } from './dto/createTaskDto';
@@ -13,7 +13,16 @@ export class TasksService {
     }
 
     getTaskById(id: string): Task {
-        return this.tasks.find(task => task.id === id);
+        const task = this.tasks.find(task => task.id === id);
+
+        if (!task) {
+            // this error will not be caught because we dont have a try catch block
+            // so this error will escalate to nestJS 
+            // nestJS will recognize the Exception() and handle response
+            throw new NotFoundException();
+        }
+
+        return task;
     }
     
     getTaskWithFilters(getTaskFilterDto: GetTaskFilterDto): Task[] {
